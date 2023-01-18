@@ -3,7 +3,7 @@ import loginImage from "../assets/login.svg";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createUser } from "../features/auth/authSlice";
+import { createUser, googleLogin } from "../features/auth/authSlice";
 const Signup = () => {
   const { handleSubmit, register, reset, control } = useForm();
   const password = useWatch({ control, name: "password" });
@@ -31,6 +31,9 @@ const Signup = () => {
     dispatch(createUser({email:data.email,password: data.password}))
     reset()
   };
+  const handleGoogleLogin = () => {
+    dispatch(googleLogin())
+  }
 
   return (
     <div className='flex h-screen items-center pt-14'>
@@ -95,6 +98,13 @@ const Signup = () => {
                   </span>
                 </p>
               </div>
+              <button
+                onClick={handleGoogleLogin}
+                type='button'
+                className='font-bold text-white py-3 rounded-full bg-primary w-full'
+              >
+                Login With Google
+              </button>
             </div>
           </form>
         </div>
