@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import loginImage from "../assets/login.svg";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUser, googleLogin } from "../features/auth/authSlice";
+import { toast } from "react-hot-toast";
 const Signup = () => {
   const { handleSubmit, register, reset, control } = useForm();
   const password = useWatch({ control, name: "password" });
   const confirmPassword = useWatch({ control, name: "confirmPassword" });
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(true);
-  const dispatch= useDispatch()
-
+  const dispatch = useDispatch()
+  const { isError ,error} = useSelector((state) => state.auth)
   useEffect(() => {
     if (
       password !== undefined &&
@@ -28,13 +29,20 @@ const Signup = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    dispatch(createUser({email:data.email,password: data.password}))
+    dispatch(createUser({ email: data.email, password: data.password }))
+    navigate('/')
     reset()
   };
   const handleGoogleLogin = () => {
     dispatch(googleLogin())
+    navigate('/')
   }
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(error)
+    }
+  }, [error, isError])
   return (
     <div className='flex h-screen items-center pt-14'>
       <div className='w-1/2'>
