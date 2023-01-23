@@ -13,7 +13,7 @@ const EmployerRegistration = () => {
   const navigate = useNavigate();
 
   const [postUser, { isLoading, isError }] = useRegisterMutation();
-  const {email}= useSelector((state)=>state.auth)
+  const {user:{email}}= useSelector((state)=>state.auth)
 
   const businessCategory = [
     "Automotive",
